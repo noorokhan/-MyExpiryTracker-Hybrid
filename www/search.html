@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Search Items</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="css/style.css">
+    <script src="cordova.js"></script>
+    <script src="app.js"></script>
+</head>
+
+<body>
+    <h1>Search Items</h1>
+
+    <label>Search by Item Name</label>
+    <input type="text" id="searchName" placeholder="e.g. Milk">
+
+    <label>Search by Category</label>
+    <select id="searchCategory">
+        <option value="">All</option>
+        <option>Food</option>
+        <option>Medicine</option>
+        <option>Bill</option>
+        <option>Insurance</option>
+        <option>Other</option>
+    </select>
+
+    <button onclick="performSearch()">SEARCH</button>
+    <button onclick="location.href='index.html'">BACK</button>
+
+    <h2>Results</h2>
+    <ul id="resultsList"></ul>
+
+    <p id="msg"></p>
+
+    <script>
+        function performSearch() {
+            var name = document.getElementById("searchName").value.trim().toLowerCase();
+            var category = document.getElementById("searchCategory").value;
+
+            db.transaction(function(tx) {
+                tx.executeSql(
+                    "SELECT * FROM items",
+                    [],
+                    function(tx, result) {
+                        var list = document.getElementById("resultsList");
+                        list.innerHTML = "";
+
+                        for (var i = 0; i < result.rows.length; i++) {
+                            var item = result.rows.item(i);
+
+                            var nameMatch = name === "" || item.item.toLowerCase().includes(name);
+                            var categoryMatch = category === "" || item.category === category;
+
+                            if (nameMatch && categoryMatch) {
+                                var li = document.createElement("li");
+                                li.innerHTML = 
+                                    "<strong>" + item.item + "</strong> (" + item.category + ") " +
+                                    "<button onclick='openDetails(" + item.id + ")'>View</button>";
+
+                                list.appendChild(li);
+                            }
+                        }
+
+                        if (list.innerHTML === "") {
+                            list.innerHTML = "<li>No matching items found.</li>";
+                        }
+                    }
+                );
+            });
+        }
+
+        function openDetails(id) {
+            localStorage.setItem("selectedItemId", id);
+            location.href = "details.html";
+        }
+    </script>
+
+</body>
+</html>

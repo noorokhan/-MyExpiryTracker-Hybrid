@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Item Details</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="css/style.css">
+    <script src="cordova.js"></script>
+    <script src="app.js"></script>
+</head>
+
+<body onload="loadDetails()">
+
+    <div class="container">
+
+        <h1>Item Details</h1>
+
+        <div id="details" class="details-box">
+            <!-- Details will load here -->
+        </div>
+
+        <button onclick="location.href='view.html'">BACK</button>
+
+    </div>
+
+    <style>
+        .details-box {
+            background: #ffffff;
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #ccc;
+            margin-bottom: 15px;
+            line-height: 1.6;
+            box-shadow: 0 0 5px rgba(0,0,0,0.05);
+        }
+
+        .details-box p {
+            margin: 8px 0;
+        }
+    </style>
+
+</body>
+</html>
